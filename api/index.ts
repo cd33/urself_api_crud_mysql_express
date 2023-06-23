@@ -4,7 +4,10 @@ import cors from "cors";
 import db from "./config/database";
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+  origin: "http://localhost:3000"
+};
+app.use(cors(corsOptions));
 
 db.connect((error: Error) => {
   if (error) {
@@ -17,7 +20,7 @@ db.connect((error: Error) => {
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
-// app.use("/auth", require("./user/auth"));
+app.use("/api/auth", require("./auth/auth.router"));
 app.use("/api/users", require("./users/user.router"));
 
 const PORT = 4000;

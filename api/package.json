@@ -1,11 +1,11 @@
 {
   "name": "urself_api_crud_mysql_express",
   "version": "1.0.0",
-  "main": "app.ts",
+  "main": "index.ts",
   "author": "cd33",
   "license": "MIT",
   "scripts": {
-    "start": "nodemon app.ts"
+    "start": "nodemon index.ts"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
