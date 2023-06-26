@@ -1,7 +1,7 @@
 import { LoginCredentials, RegisterCredentials } from "../utils/interfaces";
 
 export async function loginUser(loginCredentials: LoginCredentials) {
-  return fetch("http://localhost:4000/auth/login", {
+  return fetch("http://localhost:4000/api/auth/login", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -11,7 +11,8 @@ export async function loginUser(loginCredentials: LoginCredentials) {
 }
 
 export async function registerUser(registerCredentials: RegisterCredentials) {
-  return fetch("http://localhost:4000/auth/register", {
+  console.log('registerCredentials :>> ', registerCredentials);
+  return fetch("http://localhost:4000/api/auth/register", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

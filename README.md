@@ -9,29 +9,32 @@
 Faire en sorte que ce soit modulaire et donc évolutif, avec tout ce que tu jugeras utile à nous montrer.  
 Présentation du projet, justification éventuelle des choix...
 
+## Demo
+* date d'expiration
+
 ## TODO
-* SERVER: Sécuriser le jwt, refresh, changement de mot de passe...
-* SERVER: Différencier les droits user et admin
-* FRONT: réadapter le front avec les changements de l'api
-* FRONT: navbar, ajouter déconnexion, afficher login et register seulement si déconnecté et inversement avec home
-* SERVER: Tests, puis revoir sur la sécurité et les controles
+### FRONT
+* Home display users ou display info du user (get users et get user)
+* crud admin à coté des infos users
+* controle des accès admin et users
+* navbar, ajouter déconnexion, afficher login et register seulement si déconnecté et inversement avec home
+
+### BACK: 
+* Tests, puis revoir sur la sécurité et les controles
 * Virer les any
 
+
+## Ameliorations
+* Stocker les jwt en db, et comparer à chaque requête entrante nécessitant une authentification
+* Pour le user, getUserByUserId seulement si c'est son id
+* Users: ajouter date d'inscription ?
+* User: modification de son mot de passe et suppression compte ?
+* Front: login automatique après register
+
 ## FRONT
-* LOGIN PAGE:
-  - form avec 2 inputs email et password
-  - login => state global, jwt => reconnexion automatique, si jwt présent et non périmé
-  <!-- - controle sur les inputs (errors et touched) -->
-  <!-- ajouter date d'inscription ? -->
-* REGISTER PAGE:
-  - form avec 4 inputs name, email, password et confimationPassword
-  - création du user si non existant
-  <!-- - ajouter des controles en amont et après l'envoi de la requete (dto...) -->
 * HOMEPAGE:
-  - Si pas loggé, redirection login
   - Si admin: Afficher liste des users (leurs ids, noms et mails) + possibilité de les supprimer
   - Si classicUser: afficher mon nom et mail + possibilité de modifier/supprimer mon compte
-  <!-- - modification du mot de passe ? -->
 
 
-<!-- alter table users auto_increment = 5; -->
+<!-- alter table users auto_increment = 4; -->

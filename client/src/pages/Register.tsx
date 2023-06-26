@@ -1,77 +1,104 @@
-import { FormEvent, useState } from "react";
 import { registerUser } from "../api/auth";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+
+const delay = (ms: any) => new Promise((res) => setTimeout(res, ms));
 
 const Register = () => {
-  const [name, setName] = useState<string>("");
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
-  const [passwordConfirmation, setPasswordConfirmation] = useState<string>("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const password = watch("password");
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setMessage("");
-    setError("");
+  const onSubmit = async (data: any) => {
+    const { name, email, password, passwordConfirmation } = data;
     const token = await registerUser({
       name,
       email,
       password,
       passwordConfirmation,
     });
-    if (token.message) {
-      setMessage(token.message);
-    } else if (token.error) {
-      setError(token.error);
+    if (token.success) {
+      toast.success(token.message);
+      await delay(2000);
+      navigate("/");
+    } else {
+      toast.error(token.message);
     }
   };
 
   return (
     <>
       <h1>Please Register</h1>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <label>
           <p>Name</p>
           <input
             type="text"
-            onChange={(e) => setName(e.target.value)}
-            required
+            {...register("name", {
+              pattern: /^.{2,50}$/,
+              required: true,
+            })}
           />
         </label>
+        {errors?.name && (
+          <p className="error">
+            Name wrong format: Minimum two characters and max 50
+          </p>
+        )}
         <label>
           <p>Email</p>
           <input
             type="text"
-            onChange={(e) => setEmail(e.target.value)}
-            required
+            {...register("email", {
+              pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              required: true,
+            })}
           />
         </label>
+        {errors?.email && <p className="error">Email wrong format</p>}
         <label>
           <p>Password</p>
           <input
             type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
+            {...register("password", {
+              pattern:
+                /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
+              required: true,
+            })}
           />
         </label>
+        {errors?.password && (
+          <p className="error">
+            Password wrong format: Minimum eight characters,
+            <br />
+            at least one letter, one number and one special character
+          </p>
+        )}
         <label>
           <p>Password Confirmation</p>
           <input
             type="password"
-            onChange={(e) => setPasswordConfirmation(e.target.value)}
-            required
+            {...register("passwordConfirmation", {
+              validate: (value) =>
+                value === password || "Passwords don't match",
+            })}
           />
         </label>
+        {errors.passwordConfirmation && (
+          <p className="error">
+            {errors?.passwordConfirmation?.message?.toString()}
+          </p>
+        )}
         <div>
           <button type="submit">Submit</button>
         </div>
       </form>
-
-      {error ? (
-        <p style={{ color: "red" }}>{error}</p>
-      ) : (
-        <p style={{ color: "green" }}>{message}</p>
-      )}
     </>
   );
 };

@@ -1,11 +1,16 @@
 import { AuthController } from "./auth.controller";
-import { checkDuplicateEmailAndPassword, isValidEmail } from "../middleware/auth.middleware";
+import {
+  checkDuplicateEmailAndPassword,
+  isValidEmail,
+  isValidPassword,
+  isValidName,
+} from "../middleware/auth.middleware";
 const router = require("express").Router();
 
 router.post("/login", AuthController.login);
 router.post(
   "/register",
-  [checkDuplicateEmailAndPassword, isValidEmail],
+  [checkDuplicateEmailAndPassword, isValidEmail, isValidPassword, isValidName],
   AuthController.register
 );
 
