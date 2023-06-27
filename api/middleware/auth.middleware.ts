@@ -5,7 +5,6 @@ import { checkUserQuery, getRolesQuery } from "../auth/auth.queries";
 
 export const jwtValidation = (req: any, res: any, next: any) => {
   let token = req.get("authorization");
-  // let token = req.headers["x-access-token"];
 
   if (!token) {
     return res.status(403).send({
@@ -29,16 +28,15 @@ export const jwtValidation = (req: any, res: any, next: any) => {
         message: "Invalid token",
       });
     } else {
-      // console.log("decoded :>> ", decoded);
-      // req.decoded = decoded;
-      req.userId = decoded.result;
+      req.userId = decoded.id;
+      req.isAdmin = decoded.isAdmin;
       next();
     }
   });
 };
 
 export const isAdmin = (req: any, res: any, next: any) => {
-  if (!req.userId) {
+  if (!req.isAdmin) {
     return res.status(403).send({
       success: 0,
       message: "Require Admin Role!",

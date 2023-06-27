@@ -17,11 +17,8 @@ export const AuthController = {
       }
       const result = compareSync(body.password, results.password);
       if (result) {
-        results.password = undefined;
-        // const jsontoken = sign({ result: results }, process.env.JWT_KEY!, {
-        //   expiresIn: "1h",
-        // });
-        const token = sign({ result: results.id }, process.env.JWT_KEY!, {
+        const isAdmin = results.role === 1 ? true : false;
+        const token = sign({ id: results.id, isAdmin }, process.env.JWT_KEY!, {
           expiresIn: 3600,
         });
         return res.status(200).json({

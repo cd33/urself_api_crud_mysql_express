@@ -61,3 +61,40 @@ p.error {
   color: red;
   font-size: 12px;
 }
+
+.userUD {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttonRed {
+  background-color: red; 
+  border-radius: 15%;
+  padding: 5px;
+  color: white; 
+  border: 2px solid white;
+}
+
+.buttonRed:hover {
+  background-color: white;
+  color: red;
+  border: 2px solid red;
+}
+
+.buttonOrange {
+  background-color: orange; 
+  border-radius: 15%;
+  padding: 5px;
+  color: white; 
+  border: 2px solid white;
+}
+
+.buttonOrange:hover {
+  background-color: white;
+  color: orange;
+  border: 2px solid orange;
+}
+
+.textRed {
+  color: red;
+}

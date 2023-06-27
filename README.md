@@ -14,21 +14,20 @@ Présentation du projet, justification éventuelle des choix...
 
 ## TODO
 ### FRONT
-* Home display users ou display info du user (get users et get user)
-* crud admin à coté des infos users
-* controle des accès admin et users
-* navbar, ajouter déconnexion, afficher login et register seulement si déconnecté et inversement avec home
+* admin update
+récupérer le body coté api, user.tsx
+
 
 ### BACK: 
+* user.middleware.ts, créer controle sur l'update et delete des variables
 * Tests, puis revoir sur la sécurité et les controles
 * Virer les any
-
 
 ## Ameliorations
 * Stocker les jwt en db, et comparer à chaque requête entrante nécessitant une authentification
 * Pour le user, getUserByUserId seulement si c'est son id
 * Users: ajouter date d'inscription ?
-* User: modification de son mot de passe et suppression compte ?
+* User: modification de son mot de passe et suppression compte ? Page de paramètre user ?
 * Front: login automatique après register
 
 ## FRONT
@@ -38,3 +37,4 @@ Présentation du projet, justification éventuelle des choix...
 
 
 <!-- alter table users auto_increment = 4; -->
+<!-- U6h?Lx%939Xkm= -->

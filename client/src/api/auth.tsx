@@ -11,7 +11,6 @@ export async function loginUser(loginCredentials: LoginCredentials) {
 }
 
 export async function registerUser(registerCredentials: RegisterCredentials) {
-  console.log('registerCredentials :>> ', registerCredentials);
   return fetch("http://localhost:4000/api/auth/register", {
     method: "POST",
     headers: {

@@ -2,17 +2,17 @@ import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import Update from "./pages/Update";
 import { Routes, Route } from "react-router-dom";
 import useToken from "./utils/useToken";
 
 function App() {
   const { token, setToken } = useToken();
-  console.log('token App:>> ', token);
 
   if (!token) {
     return (
       <Routes>
-        <Route element={<Navbar />}>
+        <Route element={<Navbar token={token} />}>
           {["/", "/login"].map((path) => (
             <Route
               key={path}
@@ -28,10 +28,9 @@ function App() {
 
   return (
     <Routes>
-      <Route element={<Navbar />}>
-        <Route path="/" element={<Dashboard />} />
-        {/* <Route path="/login" element={<Login setToken={setToken} />} />
-        <Route path="/register" element={<Register />} /> */}
+      <Route element={<Navbar token={token} />}>
+        <Route path="/" element={<Dashboard token={token} />} />
+        <Route path="/update" element={<Update />} />
       </Route>
     </Routes>
   );

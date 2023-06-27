@@ -5,6 +5,6 @@ const router = require("express").Router();
 router.get("/", jwtValidation, isAdmin, UserController.getUsers);
 router.get("/:id", jwtValidation, UserController.getUserByUserId);
 router.patch("/", jwtValidation, isAdmin, UserController.updateUsers);
-router.delete("/", jwtValidation, isAdmin, UserController.deleteUser);
+router.delete("/:id", jwtValidation, isAdmin, UserController.deleteUser);
 
 module.exports = router;

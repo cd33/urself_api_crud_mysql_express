@@ -44,8 +44,11 @@ export const UserController = {
 
   updateUsers: (req: any, res: any) => {
     const body = req.body;
-    const salt = genSaltSync(10);
-    body.password = hashSync(body.password, salt);
+    console.log('body :>> ', body);
+    if (body.password) {
+      const salt = genSaltSync(10);
+      body.password = hashSync(body.password, salt);
+    }
     UserService.update(body, (err: any, results: any) => {
       if (err) {
         console.log(err);
@@ -57,7 +60,7 @@ export const UserController = {
           message: "Failed to update user",
         });
       }
-      console.log('results :>> ', results);
+      console.log("results :>> ", results);
       return res.json({
         success: 1,
         message: "Updated successfully",
@@ -66,8 +69,8 @@ export const UserController = {
   },
 
   deleteUser: (req: any, res: any) => {
-    const data = req.body;
-    UserService.delete(data, (err: any, results: any) => {
+    const id = req.params.id;
+    UserService.delete(id, (err: any, results: any) => {
       if (err) {
         console.log(err);
         return;

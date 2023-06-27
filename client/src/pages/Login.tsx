@@ -3,10 +3,8 @@ import PropTypes from "prop-types";
 import { loginUser } from "../api/auth";
 import { toast } from "react-toastify";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
 
 const Login: FC<{ setToken: any }> = ({ setToken }) => {
-  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -20,10 +18,7 @@ const Login: FC<{ setToken: any }> = ({ setToken }) => {
       password,
     });
     if (token.success) {
-      // toast.success(token.message);
       setToken(token.data);
-      // navigate("/");
-      window.location.reload();
     } else {
       toast.error(token.message);
     }
