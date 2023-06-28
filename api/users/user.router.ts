@@ -1,10 +1,37 @@
-import { isAdmin, jwtValidation } from "../middleware/auth.middleware";
+import { Router } from "express";
 import { UserController } from "./user.controller";
-const router = require("express").Router();
+import { isAdmin, jwtValidation } from "../middleware/auth.middleware";
+import {
+  isValidEmail,
+  isValidPasswordUpdate,
+  isValidName,
+} from "../middleware/form.middleware";
+import { isOwnedAccount } from "../middleware/user.middleware";
+const router = Router();
 
 router.get("/", jwtValidation, isAdmin, UserController.getUsers);
-router.get("/:id", jwtValidation, UserController.getUserByUserId);
-router.patch("/", jwtValidation, isAdmin, UserController.updateUsers);
-router.delete("/:id", jwtValidation, isAdmin, UserController.deleteUser);
+router.get(
+  "/:id",
+  jwtValidation,
+  isOwnedAccount,
+  UserController.getUserByUserId
+);
+router.patch(
+  "/",
+  [jwtValidation, isAdmin, isValidEmail, isValidPasswordUpdate, isValidName],
+  UserController.updateUsers
+);
+router.patch(
+  "/:id",
+  [
+    jwtValidation,
+    isOwnedAccount,
+    isValidEmail,
+    isValidPasswordUpdate,
+    isValidName,
+  ],
+  UserController.updateUsers
+);
+router.delete("/:id", jwtValidation, isOwnedAccount, UserController.deleteUser);
 
 module.exports = router;

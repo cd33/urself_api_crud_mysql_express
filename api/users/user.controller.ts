@@ -1,8 +1,18 @@
+import { Request } from "express";
 import { UserService } from "./user.service";
 import { hashSync, genSaltSync } from "bcryptjs";
+import { Response } from "express";
+
+export type UpdateUserData = {
+  id: number;
+  name: string;
+  email: string;
+} & Partial<{
+  password: string;
+}>
 
 export const UserController = {
-  getUserByUserId: (req: any, res: any) => {
+  getUserByUserId: (req: Request, res: Response) => {
     const id = req.params.id;
     UserService.getById(id, (err: any, results: any) => {
       if (err) {
@@ -23,7 +33,7 @@ export const UserController = {
     });
   },
 
-  getUsers: (req: any, res: any) => {
+  getUsers: (req: Request, res: Response) => {
     UserService.getAll((err: any, results: any) => {
       if (err) {
         console.log(err);
@@ -42,9 +52,9 @@ export const UserController = {
     });
   },
 
-  updateUsers: (req: any, res: any) => {
-    const body = req.body;
-    console.log('body :>> ', body);
+  updateUsers: (req: Request, res: Response) => {
+    const body: UpdateUserData = req.body;
+
     if (body.password) {
       const salt = genSaltSync(10);
       body.password = hashSync(body.password, salt);
@@ -60,7 +70,6 @@ export const UserController = {
           message: "Failed to update user",
         });
       }
-      console.log("results :>> ", results);
       return res.json({
         success: 1,
         message: "Updated successfully",
@@ -68,7 +77,7 @@ export const UserController = {
     });
   },
 
-  deleteUser: (req: any, res: any) => {
+  deleteUser: (req: Request, res: Response) => {
     const id = req.params.id;
     UserService.delete(id, (err: any, results: any) => {
       if (err) {

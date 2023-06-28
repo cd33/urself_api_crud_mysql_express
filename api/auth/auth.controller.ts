@@ -1,10 +1,23 @@
 import { AuthService } from "./auth.service";
 import { hashSync, genSaltSync, compareSync } from "bcryptjs";
 import { sign } from "jsonwebtoken";
+import { Request, Response } from 'express';
+
+export type LoginData = {
+  email: string;
+  password: string;
+}
+
+export type RegisterData = {
+  name: string;
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+}
 
 export const AuthController = {
-  login: (req: any, res: any) => {
-    const body = req.body;
+  login: (req: Request, res: Response) => {
+    const body: LoginData = req.body;
     AuthService.getUserByEmail(body.email, (err: any, results: any) => {
       if (err) {
         console.log(err);
@@ -35,8 +48,8 @@ export const AuthController = {
     });
   },
 
-  register: (req: any, res: any) => {
-    const body = req.body;
+  register: (req: Request, res: Response) => {
+    const body: RegisterData = req.body;
     const salt = genSaltSync(10);
     body.password = hashSync(body.password, salt);
     AuthService.create(body, (err: any, message: string, results: any) => {

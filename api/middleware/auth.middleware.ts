@@ -2,8 +2,9 @@ import jwt from "jsonwebtoken";
 import db from "../config/database";
 import { UserService } from "../users/user.service";
 import { checkUserQuery, getRolesQuery } from "../auth/auth.queries";
+import { Response, NextFunction } from "express";
 
-export const jwtValidation = (req: any, res: any, next: any) => {
+export const jwtValidation = (req: any, res: Response, next: NextFunction) => {
   let token = req.get("authorization");
 
   if (!token) {
@@ -35,7 +36,7 @@ export const jwtValidation = (req: any, res: any, next: any) => {
   });
 };
 
-export const isAdmin = (req: any, res: any, next: any) => {
+export const isAdmin = (req: any, res: Response, next: NextFunction) => {
   if (!req.isAdmin) {
     return res.status(403).send({
       success: 0,
@@ -76,8 +77,8 @@ export const isAdmin = (req: any, res: any, next: any) => {
 
 export const checkDuplicateEmailAndPassword = (
   req: any,
-  res: any,
-  next: any
+  res: Response,
+  next: NextFunction
 ) => {
   db.query(checkUserQuery, [req.body.email], async (error, result) => {
     if (error) {
@@ -100,43 +101,4 @@ export const checkDuplicateEmailAndPassword = (
     }
     next();
   });
-};
-
-export const isValidEmail = (req: any, res: any, next: any) => {
-  // Expression régulière pour valider le format d'une adresse e-mail
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(req.body.email)) {
-    return res.status(400).json({
-      success: 0,
-      message: "Email wrong format",
-    });
-  }
-  next();
-};
-
-export const isValidPassword = (req: any, res: any, next: any) => {
-  // Minimum eight characters, at least one letter, one number and one special character
-  const passwordRegex =
-    /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
-
-  if (!passwordRegex.test(req.body.password)) {
-    return res.status(400).json({
-      success: 0,
-      message:
-        "Password wrong format: Minimum eight characters, at least one letter, one number and one special character",
-    });
-  }
-  next();
-};
-
-export const isValidName = (req: any, res: any, next: any) => {
-  // Minimum two characters and max 50
-  const nameRegex = /^.{2,50}$/;
-  if (!nameRegex.test(req.body.name)) {
-    return res.status(400).json({
-      success: 0,
-      message: "Name wrong format: Minimum two characters and max 50",
-    });
-  }
-  next();
 };

@@ -1,8 +1,8 @@
-export interface User {
+export interface UserCredentials {
   id: number;
   name: string;
   email: string;
-  password?: number;
+  password?: string;
 }
 
 export interface LoginCredentials {

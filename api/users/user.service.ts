@@ -35,7 +35,7 @@ export const UserService = {
       values.push(data.name, data.email, data.id);
       query = updateUserQueryWithoutPassword;
     }
-    console.log("values :>> ", values);
+    
     db.query(query, values, (error: any, results: any) => {
       if (error) {
         return callBack(error);

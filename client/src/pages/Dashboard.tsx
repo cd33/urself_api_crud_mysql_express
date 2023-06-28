@@ -1,15 +1,13 @@
 import { FC, useEffect, useState, useCallback } from "react";
-import { deleteUserById, getAllUsers, getUserById } from "../api/user";
-import { User } from "../utils/interfaces";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { getAllUsers, getUserById } from "../api/user";
+import { UserCredentials } from "../utils/interfaces";
+import User from "../components/User";
 
 const Dashboard: FC<{ token: any }> = ({ token }) => {
-  const navigate = useNavigate();
-  const [users, setUsers] = useState<User[] | null>([]);
+  const [users, setUsers] = useState<UserCredentials[] | null>([]);
+  const decoded = JSON.parse(atob(token.split(".")[1]));
 
   const getUser = useCallback(async () => {
-    const decoded = JSON.parse(atob(token.split(".")[1]));
     if (!decoded.isAdmin) {
       const result = await getUserById(decoded.id, token);
       if (result.success) {
@@ -25,23 +23,13 @@ const Dashboard: FC<{ token: any }> = ({ token }) => {
         result.message && console.log("Server problem :>> ", result.message);
       }
     }
-  }, [token]);
+  }, [decoded, token]);
 
   useEffect(() => {
     if (token) {
       getUser();
     }
   }, [token, getUser]);
-
-  const handleDelete = async (id: any) => {
-    const result = await deleteUserById(id, token);
-    if (result.success) {
-      toast.success(result.message);
-      getUser();
-    } else {
-      toast.error(result.message);
-    }
-  };
 
   return (
     <div>
@@ -52,27 +40,7 @@ const Dashboard: FC<{ token: any }> = ({ token }) => {
           </h1>
           {users &&
             users.map((user) => (
-              <div key={user.id}>
-                <hr />
-                <p>Name: {user.name}</p>
-                <p>Email: {user.email}</p>
-                <div className="userUD">
-                  <button
-                    className="buttonOrange"
-                    onClick={() =>
-                      navigate("/update", { state: { user, token } })
-                    }
-                  >
-                    Update
-                  </button>
-                  <button
-                    className="buttonRed"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
+              <User key={user.id} user={user} token={token} getUser={getUser} />
             ))}
         </>
       ) : (

@@ -1,27 +1,18 @@
-// import db from "../config/database";
-// import { getRolesQuery } from "../auth/auth.queries";
+import { NextFunction, Response } from "express";
+import { isAdmin } from "./auth.middleware";
 
-// export const checkRolesExisted = (req: any, res: any, next: any) => {
-//     if (req.body.roles) {
-//       db.query(getRolesQuery, [], async (error, result) => {
-//         if (error) {
-//           return res.status(500).json({
-//             success: 0,
-//             message: "Database connection error",
-//           });
-//         }
-//         const roles = result.map((r: any) => r.name);
-//         for (let i = 0; i < req.body.roles.length; i++) {
-//           if (!roles.includes(req.body.roles[i])) {
-//             return res.status(400).json({
-//               success: 0,
-//               message: `Failed: ${req.body.roles[i]} does not exist`,
-//             });
-//           }
-//         }
-//         next();
-//       });
-//     } else {
-//       next();
-//     }
-//   };
+export const isOwnedAccount = (req: any, res: Response, next: NextFunction) => {
+  if (req.isAdmin) {
+    isAdmin(req, res, next);
+    return next();
+  }
+
+  if (req.userId == req.params.id) {
+    return next();
+  } else {
+    return res.json({
+      success: 0,
+      message: "Don't own this account",
+    });
+  }
+};

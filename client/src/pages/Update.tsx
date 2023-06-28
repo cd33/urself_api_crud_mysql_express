@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
 
-const delay = (ms: any) => new Promise((res) => setTimeout(res, ms));
+const delay = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 const Update = () => {
   const navigate = useNavigate();
@@ -32,7 +32,6 @@ const Update = () => {
 
   const onSubmit = async (data: any) => {
     const id = user?.id;
-    console.log("data :>> ", data);
     const { name, email, password } = data;
     const body = {
       id,
@@ -43,6 +42,7 @@ const Update = () => {
     if (!password) {
       delete body.password;
     }
+
     const result = await updateUser(body, token);
     if (result.success) {
       toast.success(result.message);
@@ -55,9 +55,7 @@ const Update = () => {
 
   return (
     <>
-      <h1>
-        Update {user?.name} profile with id {user?.id}
-      </h1>
+      <h1>Update {user?.name} profile</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         <label>
           <p>Name</p>
